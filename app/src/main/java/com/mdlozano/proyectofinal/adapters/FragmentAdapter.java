@@ -1,6 +1,11 @@
-package com.mdlozano.proyectofinal;
+package com.mdlozano.proyectofinal.adapters;
 
-import android.content.Context;
+import com.mdlozano.proyectofinal.fragments.ArticulosFragment;
+import com.mdlozano.proyectofinal.fragments.ClientesFragment;
+import com.mdlozano.proyectofinal.fragments.EmpleadosFragment;
+import com.mdlozano.proyectofinal.fragments.PedidosFragment;
+import com.mdlozano.proyectofinal.fragments.ProveedoresFragment;
+import com.mdlozano.proyectofinal.fragments.SucursalesFragment;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;

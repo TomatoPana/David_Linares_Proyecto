@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.mdlozano.proyectofinal.adapters.FragmentAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.mdlozano.proyectofinal;
+package com.mdlozano.proyectofinal.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mdlozano.proyectofinal.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SucursalesFragment#newInstance} factory method to
+ * Use the {@link ArticulosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SucursalesFragment extends Fragment {
+public class ArticulosFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class SucursalesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SucursalesFragment() {
+    public ArticulosFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class SucursalesFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SucursalesFragment.
+     * @return A new instance of fragment ArticulosFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SucursalesFragment newInstance(String param1, String param2) {
-        SucursalesFragment fragment = new SucursalesFragment();
+    public static ArticulosFragment newInstance(String param1, String param2) {
+        ArticulosFragment fragment = new ArticulosFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class SucursalesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sucursales, container, false);
+        return inflater.inflate(R.layout.fragment_articulos, container, false);
     }
 }

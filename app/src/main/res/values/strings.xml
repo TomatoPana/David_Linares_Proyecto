@@ -2,4 +2,13 @@
     <string name="app_name">Proyecto Final</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fab_content_desc">Add value</string>
+    <string name="empleado_add">Añadir Nuevo Empleado</string>
+    <string name="numero_de_empleado">Numero de Empleado</string>
+    <string name="nombre">Nombre</string>
+    <string name="calle">Calle</string>
+    <string name="colonia">Colonia</string>
+    <string name="numero_de_casa">Numero de Casa</string>
+    <string name="telefono">Telefono</string>
+    <string name="aniadir">Añadir</string>
 </resources>

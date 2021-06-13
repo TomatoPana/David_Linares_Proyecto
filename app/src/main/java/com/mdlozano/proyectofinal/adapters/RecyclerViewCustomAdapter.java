@@ -1,22 +1,29 @@
-package com.mdlozano.proyectofinal;
+package com.mdlozano.proyectofinal.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.mdlozano.proyectofinal.R;
+import com.mdlozano.proyectofinal.database.Empleados;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerViewCustomAdapter.ViewHolder> {
 
-    private final String[] localDataset;
+    private static ArrayList<Empleados> localDataset;
+    private static RecyclerViewClickListener itemListener;
 
-    public RecyclerViewCustomAdapter(String[] dataSet) {
+
+    public RecyclerViewCustomAdapter(ArrayList<Empleados> dataSet, RecyclerViewClickListener itemListener) {
         localDataset = dataSet;
+        RecyclerViewCustomAdapter.itemListener = itemListener;
     }
 
     @NonNull
@@ -33,28 +40,31 @@ public class RecyclerViewCustomAdapter extends RecyclerView.Adapter<RecyclerView
         TextView[] views = holder.getTextView();
 
         for (TextView view : views) {
-            view.setText(localDataset[position]);
+            view.setText(localDataset.get(position).getNombre());
         }
     }
 
     @Override
     public int getItemCount() {
-        return localDataset.length;
+        return localDataset.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView[] textView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            itemView.setOnClickListener(v -> {
-                Toast.makeText(itemView.getContext(), "Hola", Toast.LENGTH_LONG).show();
-            });
+            itemView.setOnClickListener(this);
 
             textView = new TextView[] { itemView.findViewById(R.id.textView), itemView.findViewById(R.id.textView2) };
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemListener.recyclerViewListClicked(v, this.getLayoutPosition(), localDataset);
         }
 
         public TextView[] getTextView() {
