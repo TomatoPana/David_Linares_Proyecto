@@ -27,13 +27,13 @@ public class SucursalesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empleados);
 
-        sucursalesAction = findViewById(R.id.sucursales_action);
-        Rfc = findViewById(R.id.rfc);
-        Calle = findViewById(R.id.calle);
-        Numero = findViewById(R.id.numero);
-        Colonia = findViewById(R.id.colonia);
-        Telefono = findViewById(R.id.telefono);
-        Anadir = findViewById(R.id.btnAnadirSucursal);
+        // sucursalesAction = findViewById(R.id.sucursales_action);
+        // Rfc = findViewById(R.id.rfc);
+        // Calle = findViewById(R.id.calle);
+        // Numero = findViewById(R.id.numero);
+        // Colonia = findViewById(R.id.colonia);
+        // Telefono = findViewById(R.id.telefono);
+        // Anadir = findViewById(R.id.btnAnadirSucursal);
 
         Intent intent = getIntent();
         int id = intent.getIntExtra("ID", 0);

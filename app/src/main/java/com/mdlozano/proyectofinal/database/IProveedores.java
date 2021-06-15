@@ -84,16 +84,41 @@ public interface IProveedores {
 
     };
 
-    static boolean deleteProveedores(int id) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("DELETE FROM Proveedores WHERE id = " + String.valueOf(id));
+    static boolean deleteProveedores(int id) {
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.deleteRow();
-        return resultSet.rowDeleted();
+        Runnable task = () -> {
+            try {
+
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "DELETE FROM Proveedores WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setInt(1, id);
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 
     static boolean insertProveedores(Proveedores elemento) {
@@ -136,21 +161,43 @@ public interface IProveedores {
 
     }
 
-    static boolean updateProveedores(Proveedores elemento) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        String SQL = "UPDATE Proveedores SET "
-                + "nombre = " + elemento.getNombre()
-                + "telefono = " + elemento.getTelefono()
-                + "WHERE id = " + elemento.getId();
+    static boolean updateProveedores(Proveedores elemento) {
 
-        ResultSet resultSet = statement.executeQuery(SQL);
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.updateRow();
+        Runnable task = () -> {
+            try {
 
-        return resultSet.rowUpdated();
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "UPDATE Proveedores SET nombre = ?, telefono = ? WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setString(1, elemento.getNombre());
+                statement.setString(2, elemento.getTelefono());
+                statement.setInt(3, elemento.getId());
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 }

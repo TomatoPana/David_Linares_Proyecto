@@ -1,10 +1,11 @@
 package com.mdlozano.proyectofinal.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,9 @@ public class EmpleadosActivity extends AppCompatActivity {
     EditText NumeroCasa;
     EditText Telefono;
     Button Anadir;
+    Button Eliminar;
+    Button Editar;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,11 @@ public class EmpleadosActivity extends AppCompatActivity {
         NumeroCasa = findViewById(R.id.numero_casa);
         Telefono = findViewById(R.id.telefono);
         Anadir = findViewById(R.id.btnAnadirEmpleado);
+        Eliminar = findViewById(R.id.btnEliminarEmpleados);
+        Editar = findViewById(R.id.btnEditarEmpleados);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra("ID", 0);
+        id = intent.getIntExtra("ID", 0);
         if(intent.getBooleanExtra("Edicion", false)){
             cargarEmpleado(id);
         };
@@ -60,6 +66,9 @@ public class EmpleadosActivity extends AppCompatActivity {
         Telefono.setText(info.getTelefono());
 
         Anadir.setVisibility(View.INVISIBLE);
+        Eliminar.setVisibility(View.VISIBLE);
+        Editar.setVisibility(View.VISIBLE);
+
         
     }
 
@@ -112,6 +121,50 @@ public class EmpleadosActivity extends AppCompatActivity {
             }
 
         }
+
+    }
+
+    public void eliminarEmpleado(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Estás seguro de continuar?")
+
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        IEmpleado.deleteEmpleado(EmpleadosActivity.this.id);
+
+                        Toast.makeText(EmpleadosActivity.this, "Elemento eliminado correctamente", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                })
+
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    public void editarEmpleado(View view) {
+        Empleados dato = new Empleados();
+        dato.setId(this.id);
+        dato.setNumero_empleado(Integer.parseInt(numeroEmpleado.getText().toString()));
+        dato.setNombre(Nombre.getText().toString());
+        dato.setCalle(Calle.getText().toString());
+        dato.setColonia(Colonia.getText().toString());
+        dato.setNumero_casa(NumeroCasa.getText().toString());
+        dato.setTelefono(Telefono.getText().toString());
+
+        IEmpleado.updateEmpleado(dato);
+
+        Toast.makeText(this, "Elemento editado correctamente", Toast.LENGTH_LONG).show();
+
+        finish();
 
     }
 

@@ -92,16 +92,41 @@ public interface IEmpleado {
 
     };
 
-    static boolean deleteEmpleado(int id) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("DELETE FROM Empleados WHERE id = " + String.valueOf(id));
+    static boolean deleteEmpleado(int id) {
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.deleteRow();
-        return resultSet.rowDeleted();
+        Runnable task = () -> {
+            try {
+
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/o1nn5loiir4ca32c",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "DELETE FROM Empleados WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setInt(1, id);
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 
     static boolean insertEmpleado(Empleados elemento) {
@@ -128,8 +153,6 @@ public interface IEmpleado {
 
                 preparedStatement.execute();
 
-
-
                 result.set(true);
 
                 connection.close();
@@ -148,25 +171,47 @@ public interface IEmpleado {
 
     }
 
-    static boolean updateEmpleado(Empleados elemento) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        String SQL = "UPDATE Empleados SET "
-                + "numero_empleado = " + elemento.getNumero_empleado()
-                + "nombre = " + elemento.getNombre()
-                + "calle = " + elemento.getCalle()
-                + "colonia = " + elemento.getColonia()
-                + "numero_casa = " + elemento.getNumero_casa()
-                + "telefono = " + elemento.getTelefono()
-                + "WHERE id = " + elemento.getId();
+    static boolean updateEmpleado(Empleados elemento) {
 
-        ResultSet resultSet = statement.executeQuery(SQL);
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.updateRow();
+        Runnable task = () -> {
+            try {
 
-        return resultSet.rowUpdated();
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/o1nn5loiir4ca32c",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "UPDATE Empleados SET numero_empleado = ?, nombre = ?, calle = ?, colonia = ?, numero_casa = ?, telefono = ? WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setInt(1, elemento.getNumero_empleado());
+                statement.setString(2, elemento.getNombre());
+                statement.setString(3, elemento.getCalle());
+                statement.setString(4, elemento.getColonia());
+                statement.setString(5, elemento.getNumero_casa());
+                statement.setString(6, elemento.getTelefono());
+                statement.setInt(7, elemento.getId());
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 }

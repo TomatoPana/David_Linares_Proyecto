@@ -90,16 +90,41 @@ public interface IArticulos {
 
     };
 
-    static boolean deleteArticulos(int id) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("DELETE FROM Articulos WHERE id = " + String.valueOf(id));
+    static boolean deleteArticulos(int id) {
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.deleteRow();
-        return resultSet.rowDeleted();
+        Runnable task = () -> {
+            try {
+
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "DELETE FROM Articulos WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setInt(1, id);
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 
     static boolean insertArticulos(Articulos elemento) {
@@ -145,24 +170,46 @@ public interface IArticulos {
 
     }
 
-    static boolean updateArticulos(Articulos elemento) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        String SQL = "UPDATE Articulos SET "
-                + "clave_producto = " + elemento.getClave_producto()
-                + "nombre = " + elemento.getNombre()
-                + "precio = " + elemento.getPrecio()
-                + "descripcion = " + elemento.getDescripcion()
-                + "Provedoores = " + elemento.getProveedores_id()
-                + "WHERE id = " + elemento.getId();
+    static boolean updateArticulos(Articulos elemento) {
 
-        ResultSet resultSet = statement.executeQuery(SQL);
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.updateRow();
+        Runnable task = () -> {
+            try {
 
-        return resultSet.rowUpdated();
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "UPDATE Articulos SET clave_producto = ?, nombre = ?, precio = ?, descripcion = ?, Provedoores_Id = ? WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setString(1, elemento.getClave_producto());
+                statement.setString(2, elemento.getNombre());
+                statement.setString(3, elemento.getPrecio());
+                statement.setString(4, elemento.getDescripcion());
+                statement.setInt(5, elemento.getProveedores_id());
+                statement.setInt(6, elemento.getId());
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 }

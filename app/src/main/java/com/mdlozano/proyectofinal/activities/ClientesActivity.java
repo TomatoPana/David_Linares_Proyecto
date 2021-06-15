@@ -30,20 +30,20 @@ public class ClientesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clientes);
 
-        clientesAction = findViewById(R.id.clientes_action);
-        Fecha_nacimiento = findViewById(R.id.fecha_nacimiento);
-        Nombre = findViewById(R.id.nombre);
-        Telefono = findViewById(R.id.telefono);
-        Calle = findViewById(R.id.calle);
-        Colonia = findViewById(R.id.colonia);
-        Numero_casa = findViewById(R.id.numero_casa);
-        Anadir = findViewById(R.id.btnAnadirClientes);
+        // clientesAction = findViewById(R.id.clientes_action);
+        // Fecha_nacimiento = findViewById(R.id.fecha_nacimiento);
+        // Nombre = findViewById(R.id.nombre);
+        // Telefono = findViewById(R.id.telefono);
+        // Calle = findViewById(R.id.calle);
+        // Colonia = findViewById(R.id.colonia);
+        // Numero_casa = findViewById(R.id.numero_casa);
+        // Anadir = findViewById(R.id.btnAnadirClientes);
 
         Intent intent = getIntent();
         int id = intent.getIntExtra("ID", 0);
         if(intent.getBooleanExtra("Edicion", false)){
             cargarEmpleado(id);
-        };
+        }
 
     }
 
@@ -63,7 +63,7 @@ public class ClientesActivity extends AppCompatActivity {
 
     }
 
-    public void guardarClientes(View view) {
+    public void guardarCliente(View view) {
         boolean hasProblem = false;
         if(Fecha_nacimiento.getText().length() == 0) {
             Toast.makeText(this, "Fecha de nacimiento no puede ser vacio", Toast.LENGTH_LONG).show();

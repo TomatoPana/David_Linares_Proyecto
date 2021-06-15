@@ -41,8 +41,6 @@ public class ClientesCustomAdapter extends RecyclerView.Adapter<ClientesCustomAd
 
         views[0].setText("Nombre del Cliente: " + dato.getNombre());
         views[1].setText("Telefono del cliente: " + dato.getTelefono());
-        views[2].setText("Calle del cliente: " + dato.getCalle());
-        views[3].setText("no. Casa cliente: " + dato.getNumero_casa());
 
     }
 

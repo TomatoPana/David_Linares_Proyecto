@@ -41,7 +41,7 @@ public class SucursalesCustomAdapter extends RecyclerView.Adapter<SucursalesCust
 
         views[0].setText("RFC: " + dato.getRfc());
         views[1].setText("Calle: " + dato.getCalle());
-        views[2].setText("Numero: " + dato.getNumero());
+
     }
 
     @Override

@@ -41,8 +41,6 @@ public class PedidosCustomAdapter extends RecyclerView.Adapter<PedidosCustomAdap
 
         views[0].setText("Fecha de la Compra: " + dato.getFecha_compra());
         views[1].setText("Precio del pedido: " + dato.getPrecio());
-        views[2].setText("Fecha de entrega: " + dato.getFecha_entrega());
-        views[3].setText("ID del cliente que realizo el pedido: " + dato.getClientes_id());
     }
 
     @Override

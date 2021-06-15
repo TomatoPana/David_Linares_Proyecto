@@ -42,7 +42,6 @@ public class ArticulosCustomAdapter extends RecyclerView.Adapter<ArticulosCustom
 
         views[0].setText("Clave del producto: " + dato.getClave_producto());
         views[1].setText("Nombre del articulo: " + dato.getNombre());
-        views[2].setText("Precio del articulo: " + dato.getPrecio());
     }
 
     @Override

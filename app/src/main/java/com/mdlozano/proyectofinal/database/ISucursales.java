@@ -90,16 +90,41 @@ public interface ISucursales {
 
     };
 
-    static boolean deleteSucursales(int id) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("DELETE FROM Sucursales WHERE id = " + String.valueOf(id));
+    static boolean deleteSucursales(int id) {
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.deleteRow();
-        return resultSet.rowDeleted();
+        Runnable task = () -> {
+            try {
+
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "DELETE FROM Sucursales WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setInt(1, id);
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 
     static boolean insertSucursales(Sucursales elemento) {
@@ -146,24 +171,46 @@ public interface ISucursales {
 
     }
 
-    static boolean updateSucursales(Sucursales elemento) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        String SQL = "UPDATE Sucursales SET "
-                + "rfc = " + elemento.getRfc()
-                + "calle = " + elemento.getCalle()
-                + "numero = " + elemento.getNumero()
-                + "colonia = " + elemento.getColonia()
-                + "telefono = " + elemento.getTelefono()
-                + "WHERE id = " + elemento.getId();
+    static boolean updateSucursales(Sucursales elemento) {
 
-        ResultSet resultSet = statement.executeQuery(SQL);
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.updateRow();
+        Runnable task = () -> {
+            try {
 
-        return resultSet.rowUpdated();
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "UPDATE Sucursales SET rfc = ?, calle = ?, numero = ?, colonia = ?, telefono = ? WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setString(1, elemento.getRfc());
+                statement.setString(2, elemento.getCalle());
+                statement.setString(3, elemento.getNumero());
+                statement.setString(4, elemento.getColonia());
+                statement.setString(5, elemento.getTelefono());
+                statement.setInt(6, elemento.getId());
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 }

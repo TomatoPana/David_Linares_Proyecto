@@ -92,16 +92,41 @@ public interface IClientes {
 
     };
 
-    static boolean deleteClientes(int id) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("DELETE FROM Clientes WHERE id = " + String.valueOf(id));
+    static boolean deleteClientes(int id) {
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.deleteRow();
-        return resultSet.rowDeleted();
+        Runnable task = () -> {
+            try {
+
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "DELETE FROM Clientes WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setInt(1, id);
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception){
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while(thread.isAlive()){};
+
+        return resultado.get();
     }
 
     static boolean insertClientes(Clientes elemento) {
@@ -115,7 +140,7 @@ public interface IClientes {
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
 
-                String SQL = "INSERT INTO Clientes (fecha_nacimiento, telefono, nombre, calle, colonia, numero_caso) VALUES (?,?,?,?,?,?)";
+                String SQL = "INSERT INTO Clientes (fecha_nacimiento, telefono, nombre, calle, colonia, numero_casa) VALUES (?,?,?,?,?,?)";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL);
 
@@ -125,6 +150,7 @@ public interface IClientes {
                 preparedStatement.setString(4, elemento.getCalle());
                 preparedStatement.setString(5, elemento.getColonia());
                 preparedStatement.setString(6, elemento.getNumero_casa());
+
 
                 preparedStatement.execute();
 
@@ -148,25 +174,50 @@ public interface IClientes {
 
     }
 
-    static boolean updateClientes(Clientes elemento) throws SQLException {
-        Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-                "bn0yd5x7ks7qs247",
-                "gdguphkqkfajaq3n");
-        Statement statement = connection.createStatement();
-        String SQL = "UPDATE Clientes SET "
-                + "fecha_nacimiento = " + elemento.getFecha_nacimiento()
-                + "telefono = " + elemento.getTelefono()
-                + "nombre = " + elemento.getNombre()
-                + "calle = " + elemento.getCalle()
-                + "colonia = " + elemento.getColonia()
-                + "numero_casa = " + elemento.getNumero_casa()
-                + "WHERE id = " + elemento.getId();
+    static boolean updateClientes(Clientes elemento) {
 
-        ResultSet resultSet = statement.executeQuery(SQL);
+        AtomicBoolean resultado = new AtomicBoolean(false);
 
-        resultSet.updateRow();
+        Runnable task = () -> {
+            try {
 
-        return resultSet.rowUpdated();
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "bn0yd5x7ks7qs247",
+                        "gdguphkqkfajaq3n");
+
+                String SQL = "UPDATE Clientes SET fecha_nacimiento = ?, telefono = ?, nombre = ?, calle = ?, colonia = ?, numero_casa = ? WHERE id = ?";
+
+                PreparedStatement statement = connection.prepareStatement(SQL);
+
+                statement.setInt(1, elemento.getFecha_nacimiento());
+                statement.setString(3, elemento.getTelefono());
+                statement.setString(2, elemento.getNombre());
+                statement.setString(4, elemento.getCalle());
+                statement.setString(5, elemento.getColonia());
+                statement.setString(6, elemento.getNumero_casa());
+                statement.setInt(7, elemento.getId());
+
+                statement.execute();
+
+                resultado.set(true);
+
+                connection.close();
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                resultado.set(false);
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        while (thread.isAlive()) {
+        }
+        ;
+
+        return resultado.get();
+
     }
 }
