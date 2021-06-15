@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public interface ISucursales {
-    static Sucursales getSucursales(int id) {
-        final AtomicReference<Sucursales> resultado = new AtomicReference<>();
+public interface IReciben {
+    static Reciben getReciben(int id) {
+        final AtomicReference<Reciben> resultado = new AtomicReference<>();
 
         Runnable task = () -> {
 
@@ -23,16 +23,12 @@ public interface ISucursales {
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Sucursales WHERE id = " + String.valueOf(id));
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM Reciben WHERE id = " + String.valueOf(id));
 
                 if (resultSet.next()) {
-                    resultado.set(new Sucursales(
-                            resultSet.getInt("id"),
-                            resultSet.getString("rfc"),
-                            resultSet.getString("calle"),
-                            resultSet.getString("numero"),
-                            resultSet.getString("colonia"),
-                            resultSet.getString("telefono")));
+                    resultado.set(new Reciben(
+                            resultSet.getInt("Empleados_id"),
+                            resultSet.getInt("Sucursales_id")));
                 } else {
                     resultado.set(null);
                 }
@@ -52,8 +48,8 @@ public interface ISucursales {
         return resultado.get();
     }
 
-    static ArrayList<Sucursales> getSucursales() {
-        ArrayList<Sucursales> resultado = new ArrayList<>();
+    static ArrayList<Reciben> getReciben() {
+        ArrayList<Reciben> resultado = new ArrayList<>();
         Runnable task = () -> {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -62,16 +58,12 @@ public interface ISucursales {
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Sucursales");
-                Sucursales elemento;
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM Reciben");
+                Reciben elemento;
                 while (resultSet.next()) {
-                    elemento = new Sucursales(
-                            resultSet.getInt("id"),
-                            resultSet.getString("rfc"),
-                            resultSet.getString("calle"),
-                            resultSet.getString("numero"),
-                            resultSet.getString("colonia"),
-                            resultSet.getString("telefono"));
+                    elemento = new Reciben(
+                            resultSet.getInt("Empleados_id"),
+                            resultSet.getInt("Sucursales_id"));
                     resultado.add(elemento);
                 }
                 connection.close();
@@ -90,19 +82,19 @@ public interface ISucursales {
 
     };
 
-    static boolean deleteSucursales(int id) throws SQLException {
+    static boolean deleteReciben(int id) throws SQLException {
         Connection connection = DriverManager.getConnection(
                 "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
                 "bn0yd5x7ks7qs247",
                 "gdguphkqkfajaq3n");
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("DELETE FROM Sucursales WHERE id = " + String.valueOf(id));
+        ResultSet resultSet = statement.executeQuery("DELETE FROM Reciben WHERE id = " + String.valueOf(id));
 
         resultSet.deleteRow();
         return resultSet.rowDeleted();
     }
 
-    static boolean insertSucursales(Sucursales elemento) {
+    static boolean insertReciben(Reciben elemento) {
         AtomicBoolean result = new AtomicBoolean(false);
 
         Runnable task = () -> {
@@ -113,16 +105,12 @@ public interface ISucursales {
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
 
-                String SQL = "INSERT INTO Sucursales (rfc, calle, numero, colonia, telefono) VALUES (?,?,?,?,?,?)";
+                String SQL = "INSERT INTO Reciben (Sucursales_id, Articulos_id) VALUES (?,?,?,?,?,?)";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL);
 
-                preparedStatement.setString(1, elemento.getRfc());
-                preparedStatement.setString(2, elemento.getCalle());
-                preparedStatement.setString(3, elemento.getNumero());
-                preparedStatement.setString(4, elemento.getColonia());
-                preparedStatement.setString(5, elemento.getTelefono());
-
+                preparedStatement.setInt(1, elemento.getSucursales_id());
+                preparedStatement.setInt(2, elemento.getArticulos_id());
 
                 preparedStatement.execute();
 
@@ -146,19 +134,16 @@ public interface ISucursales {
 
     }
 
-    static boolean updateSucursales(Sucursales elemento) throws SQLException {
+    static boolean updateReciben(Reciben elemento) throws SQLException {
         Connection connection = DriverManager.getConnection(
                 "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
                 "bn0yd5x7ks7qs247",
                 "gdguphkqkfajaq3n");
         Statement statement = connection.createStatement();
-        String SQL = "UPDATE Sucursales SET "
-                + "rfc = " + elemento.getRfc()
-                + "calle = " + elemento.getCalle()
-                + "numero = " + elemento.getNumero()
-                + "colonia = " + elemento.getColonia()
-                + "telefono = " + elemento.getTelefono()
-                + "WHERE id = " + elemento.getId();
+        String SQL = "UPDATE Reciben SET "
+                + "Empleados_id = " + elemento.getSucursales_id()
+                + "Sucursales_id = " + elemento.getArticulos_id();
+
 
         ResultSet resultSet = statement.executeQuery(SQL);
 

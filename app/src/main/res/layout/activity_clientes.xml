@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EmpleadosActivity">
+    tools:context=".activities.ClientesActivity">
 
     <TextView
-        android:id="@+id/empleados_action"
+        android:id="@+id/fecha_nacimiento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -21,19 +20,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/numero_empleado"
+        android:id="@+id/telefono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/numero_de_empleado"
-        android:inputType="number"
+        android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/empleados_action"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/fecha_nacimiento"
+        android:autofillHints=""
+        android:hint="@string/telefono"/>
 
     <EditText
         android:id="@+id/nombre"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numero_empleado"
+        app:layout_constraintTop_toBottomOf="@+id/telefono"
         android:autofillHints=""
         android:hint="@string/nombre"/>
 
@@ -99,24 +99,8 @@
         android:autofillHints=""
         android:hint="@string/numero_de_casa"/>
 
-    <EditText
-        android:id="@+id/telefono"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="phone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numero_casa"
-        android:autofillHints=""
-        android:hint="@string/telefono"/>
-
     <Button
-        android:id="@+id/btnAnadirEmpleado"
+        android:id="@+id/btnAnadirClientes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -125,6 +109,6 @@
         android:text="@string/aniadir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/telefono"
-        android:onClick="guardarEmpleado" />
+        app:layout_constraintTop_toBottomOf="@id/numero_casa"
+        android:onClick="guardarCliente" />
 </androidx.constraintlayout.widget.ConstraintLayout>

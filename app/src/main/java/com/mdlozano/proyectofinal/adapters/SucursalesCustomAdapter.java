@@ -2,10 +2,8 @@ package com.mdlozano.proyectofinal.adapters;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.mdlozano.proyectofinal.R;
-import com.mdlozano.proyectofinal.database.Articulos;
+import com.mdlozano.proyectofinal.database.Sucursales;
 
 
 import java.util.ArrayList;
@@ -13,11 +11,11 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ArticulosCustomAdapter extends RecyclerView.Adapter<ArticulosCustomAdapter.ViewHolder> {
+public class SucursalesCustomAdapter extends RecyclerView.Adapter<SucursalesCustomAdapter.ViewHolder> {
 
-    private ArrayList<Articulos> dataSet = new ArrayList<>();
+    private ArrayList<Sucursales> dataSet = new ArrayList<>();
 
-    public ArticulosCustomAdapter(ArrayList<Articulos> data) {
+    public void Sucursales(ArrayList<Sucursales> data) {
         this.dataSet = data;
     }
 
@@ -28,7 +26,7 @@ public class ArticulosCustomAdapter extends RecyclerView.Adapter<ArticulosCustom
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArticulosCustomAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SucursalesCustomAdapter.ViewHolder holder, int position) {
 
     }
 

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public interface ISucursales {
-    static Sucursales getSucursales(int id) {
-        final AtomicReference<Sucursales> resultado = new AtomicReference<>();
+public interface ITienen {
+    static Tienen getTienen(int id) {
+        final AtomicReference<Tienen> resultado = new AtomicReference<>();
 
         Runnable task = () -> {
 
@@ -23,16 +23,12 @@ public interface ISucursales {
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Sucursales WHERE id = " + String.valueOf(id));
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM Tienen WHERE id = " + String.valueOf(id));
 
                 if (resultSet.next()) {
-                    resultado.set(new Sucursales(
-                            resultSet.getInt("id"),
-                            resultSet.getString("rfc"),
-                            resultSet.getString("calle"),
-                            resultSet.getString("numero"),
-                            resultSet.getString("colonia"),
-                            resultSet.getString("telefono")));
+                    resultado.set(new Tienen(
+                            resultSet.getInt("Articulos_id"),
+                            resultSet.getInt("Pedidos_id")));
                 } else {
                     resultado.set(null);
                 }
@@ -52,8 +48,8 @@ public interface ISucursales {
         return resultado.get();
     }
 
-    static ArrayList<Sucursales> getSucursales() {
-        ArrayList<Sucursales> resultado = new ArrayList<>();
+    static ArrayList<Tienen> getTienen() {
+        ArrayList<Tienen> resultado = new ArrayList<>();
         Runnable task = () -> {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -62,16 +58,12 @@ public interface ISucursales {
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Sucursales");
-                Sucursales elemento;
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM Tienen");
+                Tienen elemento;
                 while (resultSet.next()) {
-                    elemento = new Sucursales(
-                            resultSet.getInt("id"),
-                            resultSet.getString("rfc"),
-                            resultSet.getString("calle"),
-                            resultSet.getString("numero"),
-                            resultSet.getString("colonia"),
-                            resultSet.getString("telefono"));
+                    elemento = new Tienen(
+                            resultSet.getInt("Articulos_id"),
+                            resultSet.getInt("Pedidos_id"));
                     resultado.add(elemento);
                 }
                 connection.close();
@@ -90,19 +82,19 @@ public interface ISucursales {
 
     };
 
-    static boolean deleteSucursales(int id) throws SQLException {
+    static boolean deleteTienen(int id) throws SQLException {
         Connection connection = DriverManager.getConnection(
                 "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
                 "bn0yd5x7ks7qs247",
                 "gdguphkqkfajaq3n");
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("DELETE FROM Sucursales WHERE id = " + String.valueOf(id));
+        ResultSet resultSet = statement.executeQuery("DELETE FROM Tienen WHERE id = " + String.valueOf(id));
 
         resultSet.deleteRow();
         return resultSet.rowDeleted();
     }
 
-    static boolean insertSucursales(Sucursales elemento) {
+    static boolean insertTienen(Tienen elemento) {
         AtomicBoolean result = new AtomicBoolean(false);
 
         Runnable task = () -> {
@@ -113,16 +105,12 @@ public interface ISucursales {
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
 
-                String SQL = "INSERT INTO Sucursales (rfc, calle, numero, colonia, telefono) VALUES (?,?,?,?,?,?)";
+                String SQL = "INSERT INTO Tienen (Articulos_id, Pedidos_id) VALUES (?,?,?,?,?,?)";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL);
 
-                preparedStatement.setString(1, elemento.getRfc());
-                preparedStatement.setString(2, elemento.getCalle());
-                preparedStatement.setString(3, elemento.getNumero());
-                preparedStatement.setString(4, elemento.getColonia());
-                preparedStatement.setString(5, elemento.getTelefono());
-
+                preparedStatement.setInt(1, elemento.getArticulos_id());
+                preparedStatement.setInt(2, elemento.getPedidos_id());
 
                 preparedStatement.execute();
 
@@ -146,19 +134,15 @@ public interface ISucursales {
 
     }
 
-    static boolean updateSucursales(Sucursales elemento) throws SQLException {
+    static boolean updateTienen(Tienen elemento) throws SQLException {
         Connection connection = DriverManager.getConnection(
                 "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
                 "bn0yd5x7ks7qs247",
                 "gdguphkqkfajaq3n");
         Statement statement = connection.createStatement();
-        String SQL = "UPDATE Sucursales SET "
-                + "rfc = " + elemento.getRfc()
-                + "calle = " + elemento.getCalle()
-                + "numero = " + elemento.getNumero()
-                + "colonia = " + elemento.getColonia()
-                + "telefono = " + elemento.getTelefono()
-                + "WHERE id = " + elemento.getId();
+        String SQL = "UPDATE Tienen SET "
+                + "Articulos_id = " + elemento.getArticulos_id()
+                + "Pedidos_id = " + elemento.getPedidos_id();
 
         ResultSet resultSet = statement.executeQuery(SQL);
 
