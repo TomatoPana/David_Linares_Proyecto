@@ -2,7 +2,7 @@ package com.mdlozano.proyectofinal.database;
 
 public class Clientes {
     private int id;
-    private int fecha_nacimiento;
+    private String fecha_nacimiento;
     private String telefono;
     private String nombre;
     private String calle;
@@ -11,7 +11,7 @@ public class Clientes {
 
     public Clientes(){
         this.id = 0;
-        this.fecha_nacimiento = 0;
+        this.fecha_nacimiento = "";
         this.telefono = "";
         this.nombre = "";
         this.calle = "";
@@ -22,7 +22,7 @@ public class Clientes {
 
     public Clientes(
             int id,
-            int fecha_nacimiento,
+            String fecha_nacimiento,
             String telefono,
             String nombre,
             String calle,
@@ -47,11 +47,11 @@ public class Clientes {
         this.id = id;
     }
 
-    public int getFecha_nacimiento() {
+    public String getFecha_nacimiento() {
         return fecha_nacimiento;
     }
 
-    public void setFecha_nacimiento(int fecha_nacimiento) { this.fecha_nacimiento = fecha_nacimiento; }
+    public void setFecha_nacimiento(String fecha_nacimiento) { this.fecha_nacimiento = fecha_nacimiento; }
 
     public String getTelefono() { return telefono; }
 

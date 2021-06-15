@@ -1,7 +1,9 @@
 package com.mdlozano.proyectofinal.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,8 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.mdlozano.proyectofinal.R;
-import com.mdlozano.proyectofinal.database.Clientes;
 import com.mdlozano.proyectofinal.database.Pedidos;
 import com.mdlozano.proyectofinal.database.IPedidos;
 
@@ -22,6 +24,9 @@ public class PedidosActivity extends AppCompatActivity {
     EditText Fecha_entrega;
     EditText Clientes_id;
     Button Anadir;
+    Button Eliminar;
+    Button Editar;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,58 +39,64 @@ public class PedidosActivity extends AppCompatActivity {
         Fecha_entrega = findViewById(R.id.fecha_entrega);
         Clientes_id = findViewById(R.id.clientes_id);
         Anadir = findViewById(R.id.btnAnadirPedidos);
+        Eliminar = findViewById(R.id.btnEliminarPedidos);
+        Editar = findViewById(R.id.btnEditarPedidos);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra("ID", 0);
-        if(intent.getBooleanExtra("Edicion", false)){
+        id = intent.getIntExtra("ID", 0);
+        if (intent.getBooleanExtra("Edicion", false)) {
             cargarPedidos(id);
-        };
+        }
+        ;
 
     }
 
     public void cargarPedidos(int id) {
         Pedidos info = IPedidos.getPedidos(id);
 
-        pedidosAction.setText("Mostrando información Pedidos ID: " + info.getId());
+        pedidosAction.setText("Mostrando información de pedidos: " + info.getId());
         Fecha_compra.setText(String.valueOf(info.getFecha_compra()));
         Precio.setText(String.valueOf(info.getPrecio()));
-        Fecha_entrega.setText(info.getFecha_entrega());
-        Clientes_id.setText(info.getClientes_id());
+        Fecha_entrega.setText(String.valueOf(info.getFecha_entrega()));
+        Clientes_id.setText(String.valueOf(info.getClientes_id()));
 
         Anadir.setVisibility(View.INVISIBLE);
+        Eliminar.setVisibility(View.VISIBLE);
+        Editar.setVisibility(View.VISIBLE);
+
 
     }
 
     public void guardarPedidos(View view) {
         boolean hasProblem = false;
-        if(Fecha_compra.getText().length() == 0) {
-            Toast.makeText(this, "La fecha de compra no debe estar vacia", Toast.LENGTH_LONG).show();
+        if (Fecha_compra.getText().length() == 0) {
+            Toast.makeText(this, "Numero de empleado no puede ser vacio", Toast.LENGTH_LONG).show();
+            hasProblem = true;
+        }
+        if (Precio.getText().length() == 0) {
+            Toast.makeText(this, "Calle no puede ser vacio", Toast.LENGTH_LONG).show();
             hasProblem = true;
         }
 
-        if(Precio.getText().length() == 0) {
-            Toast.makeText(this, "El precio no debe estar vacio", Toast.LENGTH_LONG).show();
+        if (Fecha_entrega.getText().length() == 0) {
+            Toast.makeText(this, "Nombre no puede ser vacio", Toast.LENGTH_LONG).show();
             hasProblem = true;
         }
 
-        if(Fecha_entrega.getText().length() == 0) {
-            Toast.makeText(this, "La fecha de entrega no puede estar vacia", Toast.LENGTH_LONG).show();
+        if (Clientes_id.getText().length() == 0) {
+            Toast.makeText(this, "Colonia no puede ser vacio", Toast.LENGTH_LONG).show();
             hasProblem = true;
         }
 
-        if(Clientes_id.getText().length() == 0) {
-            Toast.makeText(this, "El ID del cliente que  hizo la compra no puede estar vacia", Toast.LENGTH_LONG).show();
-            hasProblem = true;
-        }
 
-        if(!hasProblem) {
+        if (!hasProblem) {
             Pedidos dato = new Pedidos();
-            dato.setFecha_compra(Integer.parseInt(Fecha_compra.getText().toString()));
+            dato.setFecha_compra(Fecha_compra.getText().toString());
             dato.setPrecio(Integer.parseInt(Precio.getText().toString()));
-            dato.setFecha_compra(Integer.parseInt(Fecha_compra.getText().toString()));
+            dato.setFecha_entrega(Fecha_entrega.getText().toString());
             dato.setClientes_id(Integer.parseInt(Clientes_id.getText().toString()));
 
-            if(IPedidos.insertPedidos(dato)) {
+            if (IPedidos.insertPedidos(dato)) {
                 Toast.makeText(this, "Dato insertado correctamente", Toast.LENGTH_LONG).show();
                 finish();
             } else {
@@ -93,6 +104,48 @@ public class PedidosActivity extends AppCompatActivity {
             }
 
         }
+
+    }
+
+    public void eliminarPedidos(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Estás seguro de continuar?")
+
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        IPedidos.deletePedidos(PedidosActivity.this.id);
+
+                        Toast.makeText(PedidosActivity.this, "Elemento eliminado correctamente", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                })
+
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    public void editarPedidos(View view) {
+        Pedidos dato = new Pedidos();
+        dato.setId(this.id);
+        dato.setFecha_compra(Fecha_compra.getText().toString());
+        dato.setPrecio(Float.parseFloat(Precio.getText().toString()));
+        dato.setFecha_entrega(Fecha_entrega.getText().toString());
+        dato.setClientes_id(Integer.parseInt(Clientes_id.getText().toString()));
+
+        IPedidos.updatePedidos(dato);
+
+        Toast.makeText(this, "Elemento editado correctamente", Toast.LENGTH_LONG).show();
+
+        finish();
 
     }
 }

@@ -3,25 +3,25 @@ package com.mdlozano.proyectofinal.database;
 public class Pedidos {
 
     private int id;
-    private int fecha_compra;
+    private String fecha_compra;
     private float precio;
-    private int fecha_entrega;
+    private String fecha_entrega;
     private int Clientes_id;
 
     public Pedidos(){
         this.id = 0;
-        this.fecha_compra = 0;
+        this.fecha_compra = "";
         this.precio = 0;
-        this.fecha_entrega = 0;
+        this.fecha_entrega = "";
         this.Clientes_id = 0;
 
     }
 
     public Pedidos(
             int id,
-            int fecha_compra,
+            String fecha_compra,
             float precio,
-            int fecha_entrega,
+            String fecha_entrega,
             int Clientes_id
     ) {
         this.id = id;
@@ -39,11 +39,11 @@ public class Pedidos {
         this.id = id;
     }
 
-    public int getFecha_compra() {
+    public String getFecha_compra() {
         return fecha_compra;
     }
 
-    public void setFecha_compra(int fecha_compra) {
+    public void setFecha_compra(String fecha_compra) {
         this.fecha_compra = fecha_compra;
     }
 
@@ -55,11 +55,11 @@ public class Pedidos {
         this.precio = precio;
     }
 
-    public int getFecha_entrega() {
+    public String getFecha_entrega() {
         return fecha_entrega;
     }
 
-    public void setFecha_entrega(int fecha_entrega) {
+    public void setFecha_entrega(String fecha_entrega) {
         this.fecha_entrega = fecha_entrega;
     }
 

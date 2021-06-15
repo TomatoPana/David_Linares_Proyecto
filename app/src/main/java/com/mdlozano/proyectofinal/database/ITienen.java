@@ -84,7 +84,7 @@ public interface ITienen {
 
     static boolean deleteTienen(int id) throws SQLException {
         Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/o1nn5loiir4ca32c",
                 "bn0yd5x7ks7qs247",
                 "gdguphkqkfajaq3n");
         Statement statement = connection.createStatement();
@@ -136,7 +136,7 @@ public interface ITienen {
 
     static boolean updateTienen(Tienen elemento) throws SQLException {
         Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/o1nn5loiir4ca32c",
                 "bn0yd5x7ks7qs247",
                 "gdguphkqkfajaq3n");
         Statement statement = connection.createStatement();

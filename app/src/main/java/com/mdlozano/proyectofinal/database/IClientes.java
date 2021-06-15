@@ -28,7 +28,7 @@ public interface IClientes {
                 if (resultSet.next()) {
                     resultado.set(new Clientes(
                             resultSet.getInt("id"),
-                            resultSet.getInt("fecha_nacimiento"),
+                            resultSet.getString("fecha_nacimiento"),
                             resultSet.getString("telefono"),
                             resultSet.getString("nombre"),
                             resultSet.getString("calle"),
@@ -68,7 +68,7 @@ public interface IClientes {
                 while (resultSet.next()) {
                     elemento = new Clientes(
                             resultSet.getInt("id"),
-                            resultSet.getInt("fecha_nacimiento"),
+                            resultSet.getString("fecha_nacimiento"),
                             resultSet.getString("telefono"),
                             resultSet.getString("nombre"),
                             resultSet.getString("calle"),
@@ -99,7 +99,7 @@ public interface IClientes {
             try {
 
                 Connection connection = DriverManager.getConnection(
-                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/o1nn5loiir4ca32c",
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
 
@@ -144,7 +144,7 @@ public interface IClientes {
 
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL);
 
-                preparedStatement.setInt(1, elemento.getFecha_nacimiento());
+                preparedStatement.setString(1, elemento.getFecha_nacimiento());
                 preparedStatement.setString(2, elemento.getTelefono());
                 preparedStatement.setString(3, elemento.getNombre());
                 preparedStatement.setString(4, elemento.getCalle());
@@ -182,7 +182,7 @@ public interface IClientes {
             try {
 
                 Connection connection = DriverManager.getConnection(
-                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                        "jdbc:mysql://ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com/o1nn5loiir4ca32c",
                         "bn0yd5x7ks7qs247",
                         "gdguphkqkfajaq3n");
 
@@ -190,7 +190,7 @@ public interface IClientes {
 
                 PreparedStatement statement = connection.prepareStatement(SQL);
 
-                statement.setInt(1, elemento.getFecha_nacimiento());
+                statement.setString(1, elemento.getFecha_nacimiento());
                 statement.setString(3, elemento.getTelefono());
                 statement.setString(2, elemento.getNombre());
                 statement.setString(4, elemento.getCalle());

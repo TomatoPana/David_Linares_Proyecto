@@ -8,7 +8,7 @@
     tools:context=".activities.ClientesActivity">
 
     <TextView
-        android:id="@+id/fecha_nacimiento"
+        android:id="@+id/clientes_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -19,6 +19,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/fecha_nacimiento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clientes_action"
+        android:hint="Fecha de Nacimiento"/>
 
     <EditText
         android:id="@+id/telefono"
@@ -110,7 +124,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
-        android:onClick="guardarCliente"
+        android:onClick="editarCliente"
         android:text="Editar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -125,7 +139,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
-        android:onClick="guardarCliente"
+        android:onClick="eliminarCliente"
         android:text="Eliminar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
