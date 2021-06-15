@@ -6,23 +6,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mdlozano.proyectofinal.R;
-import com.mdlozano.proyectofinal.database.Articulos;
-
+import com.mdlozano.proyectofinal.database.Empleados;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ArticulosCustomAdapter extends RecyclerView.Adapter<ArticulosCustomAdapter.ViewHolder> {
+public class EmpleadosCustomAdapter extends RecyclerView.Adapter<EmpleadosCustomAdapter.ViewHolder> {
 
-    private static ArrayList<Articulos> localDataset;
-    private static ArticulosClickListener itemListener;
+    private static ArrayList<Empleados> localDataset;
+    private static EmpleadosClickListener itemListener;
 
 
-    public ArticulosCustomAdapter(ArrayList<Articulos> dataSet, ArticulosClickListener itemListener) {
+    public EmpleadosCustomAdapter(ArrayList<Empleados> dataSet, EmpleadosClickListener itemListener) {
         localDataset = dataSet;
-        ArticulosCustomAdapter.itemListener = itemListener;
+        EmpleadosCustomAdapter.itemListener = itemListener;
     }
 
     @NonNull
@@ -35,14 +34,13 @@ public class ArticulosCustomAdapter extends RecyclerView.Adapter<ArticulosCustom
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArticulosCustomAdapter.ViewHolder holder, int position) {
-        Articulos dato = localDataset.get(position);
+    public void onBindViewHolder(@NonNull EmpleadosCustomAdapter.ViewHolder holder, int position) {
+        Empleados dato = localDataset.get(position);
 
         TextView[] views = holder.getTextView();
 
-        views[0].setText("Clave del producto: " + dato.getClave_producto());
-        views[1].setText("Nombre del articulo: " + dato.getNombre());
-        views[2].setText("Precio del articulo: " + dato.getPrecio());
+        views[0].setText("Nombre: " + dato.getNombre());
+        views[1].setText("No. Empleado: " + dato.getNumero_empleado());
     }
 
     @Override
@@ -65,7 +63,7 @@ public class ArticulosCustomAdapter extends RecyclerView.Adapter<ArticulosCustom
 
         @Override
         public void onClick(View v) {
-            itemListener.ArticulosListClicked(v, this.getLayoutPosition(), localDataset);
+            itemListener.EmpleadosListClicked(v, this.getLayoutPosition(), localDataset);
         }
 
         public TextView[] getTextView() {

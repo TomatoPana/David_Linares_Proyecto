@@ -1,12 +1,12 @@
 package com.mdlozano.proyectofinal.adapters;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mdlozano.proyectofinal.R;
 import com.mdlozano.proyectofinal.database.Pedidos;
-
 
 import java.util.ArrayList;
 
@@ -15,37 +15,62 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PedidosCustomAdapter extends RecyclerView.Adapter<PedidosCustomAdapter.ViewHolder> {
 
-    private ArrayList<Pedidos> dataSet = new ArrayList<>();
+    private static ArrayList<Pedidos> localDataset;
+    private static PedidosClickListener itemListener;
 
-    public PedidosCustomAdapter(ArrayList<Pedidos> data) {
-        this.dataSet = data;
+
+    public PedidosCustomAdapter(ArrayList<Pedidos> dataSet, PedidosClickListener itemListener) {
+        localDataset = dataSet;
+        PedidosCustomAdapter.itemListener = itemListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.text_row_item, parent, false);
+
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PedidosCustomAdapter.ViewHolder holder, int position) {
+        Pedidos dato = localDataset.get(position);
 
+        TextView[] views = holder.getTextView();
+
+        views[0].setText("Fecha de la Compra: " + dato.getFecha_compra());
+        views[1].setText("Precio del pedido: " + dato.getPrecio());
+        views[2].setText("Fecha de entrega: " + dato.getFecha_entrega());
+        views[3].setText("ID del cliente que realizo el pedido: " + dato.getClientes_id());
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return localDataset.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private final TextView[] textView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
+
+            textView = new TextView[] { itemView.findViewById(R.id.textView), itemView.findViewById(R.id.textView2) };
 
         }
 
+        @Override
+        public void onClick(View v) {
+            itemListener.PedidosListClicked(v, this.getLayoutPosition(), localDataset);
+        }
+
+        public TextView[] getTextView() {
+            return textView;
+        }
 
     }
 

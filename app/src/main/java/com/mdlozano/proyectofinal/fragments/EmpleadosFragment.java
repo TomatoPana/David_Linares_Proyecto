@@ -10,19 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mdlozano.proyectofinal.R;
 import com.mdlozano.proyectofinal.activities.EmpleadosActivity;
-import com.mdlozano.proyectofinal.adapters.RecyclerViewClickListener;
-import com.mdlozano.proyectofinal.adapters.RecyclerViewCustomAdapter;
+import com.mdlozano.proyectofinal.adapters.EmpleadosClickListener;
+import com.mdlozano.proyectofinal.adapters.EmpleadosCustomAdapter;
 import com.mdlozano.proyectofinal.database.Empleados;
 import com.mdlozano.proyectofinal.database.IEmpleado;
 
 import java.util.ArrayList;
 
-public class EmpleadosFragment extends Fragment implements RecyclerViewClickListener {
+public class EmpleadosFragment extends Fragment implements EmpleadosClickListener {
 
     RecyclerView recyclerView;
     FloatingActionButton FAB;
@@ -54,7 +53,7 @@ public class EmpleadosFragment extends Fragment implements RecyclerViewClickList
         mDataset = IEmpleado.getEmpleados();
 
 
-        recyclerView.setAdapter(new RecyclerViewCustomAdapter(mDataset, this));
+        recyclerView.setAdapter(new EmpleadosCustomAdapter(mDataset, this));
         recyclerView.setLayoutManager(linearLayoutManager);
 
         return view;
@@ -70,12 +69,12 @@ public class EmpleadosFragment extends Fragment implements RecyclerViewClickList
         mDataset = IEmpleado.getEmpleados();
 
 
-        recyclerView.setAdapter(new RecyclerViewCustomAdapter(mDataset, this));
+        recyclerView.setAdapter(new EmpleadosCustomAdapter(mDataset, this));
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     @Override
-    public void recyclerViewListClicked(View v, int position, ArrayList<Empleados> dataSet) {
+    public void EmpleadosListClicked(View v, int position, ArrayList<Empleados> dataSet) {
         Intent newActivity = new Intent(getActivity(), EmpleadosActivity.class);
         newActivity.putExtra("Edicion", true);
         newActivity.putExtra("ID", dataSet.get(position).getId());

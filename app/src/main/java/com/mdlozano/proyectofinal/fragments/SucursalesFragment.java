@@ -1,66 +1,84 @@
 package com.mdlozano.proyectofinal.fragments;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mdlozano.proyectofinal.adapters.SucursalesClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mdlozano.proyectofinal.R;
+import com.mdlozano.proyectofinal.activities.SucursalesActivity;
+import com.mdlozano.proyectofinal.adapters.SucursalesCustomAdapter;
+import com.mdlozano.proyectofinal.database.Sucursales;
+import com.mdlozano.proyectofinal.database.ISucursales;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SucursalesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SucursalesFragment extends Fragment {
+import java.util.ArrayList;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class SucursalesFragment extends Fragment implements SucursalesClickListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SucursalesFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SucursalesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SucursalesFragment newInstance(String param1, String param2) {
-        SucursalesFragment fragment = new SucursalesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    RecyclerView recyclerView;
+    FloatingActionButton FAB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sucursales, container, false);
+        View view = inflater.inflate(R.layout.fragment_empleados, container, false);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        FAB = view.findViewById(R.id.floating_action_button);
+
+        FAB.setOnClickListener(v -> {
+            Intent newActivity = new Intent(getActivity(), SucursalesActivity.class);
+            newActivity.putExtra("Edicion", false);
+            startActivity(newActivity);
+        });
+
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
+        ArrayList<Sucursales> mDataset;
+        mDataset = ISucursales.getSucursales();
+
+
+        recyclerView.setAdapter(new SucursalesCustomAdapter(mDataset, this));
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
+        ArrayList<Sucursales> mDataset;
+        mDataset = ISucursales.getSucursales();
+
+
+        recyclerView.setAdapter(new SucursalesCustomAdapter(mDataset, this));
+        recyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void SucursalesListClicked(View v, int position, ArrayList<Sucursales> dataSet) {
+        Intent newActivity = new Intent(getActivity(), SucursalesActivity.class);
+        newActivity.putExtra("Edicion", true);
+        newActivity.putExtra("ID", dataSet.get(position).getId());
+        startActivity(newActivity);
     }
 }
