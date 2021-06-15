@@ -1,4 +1,4 @@
-package com.mdlozano.proyectofinal;
+package com.example.pfinal;
 
 import org.junit.Test;
 
